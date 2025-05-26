@@ -1,56 +1,62 @@
 import streamlit as st
-from openai import OpenAI
+import openai
+import os
 
-# Show title and description.
-st.title("💬 Chatbot")
-st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
+# Set OpenAI API Key securely
+openai.api_key = "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"  # Replace with your key or use environment variables
+
+def ask_energy_question(question):
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are an expert in energy efficiency and HVAC systems."},
+                {"role": "user", "content": question}
+            ],
+            temperature=0.5,
+            max_tokens=300
+        )
+        return response.choices[0].message.content
+    except openai.APIError as e:
+        return f"OpenAI API Error: {e}"
+    except Exception as ex:
+        return f"Unexpected error: {ex}"
+
+# --- Streamlit UI ---
+st.set_page_config(page_title="Energy Estimator", page_icon="💡")
+
+# Header
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <h1 style='color: #2c3e50;'>🔋 AI Energy Estimation Assistant</h1>
+        <p style='font-size:18px;'>Smart energy estimates powered by GPT-4o — built by IntuiNext Inc.</p>
+    </div>
+    """, unsafe_allow_html=True
 )
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+# Input section
+with st.container():
+    st.subheader("💭 Ask a Question About Energy Usage")
+    st.markdown("*Examples:*\n- How much energy is needed to cool a 1200 sq ft house?\n- What's the average electricity cost for heating in winter?")
+    
+    question = st.text_input("Enter your question:", placeholder="e.g., energy needed to cool a 1200 sq ft house")
 
-    # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+    if st.button("🔍 Get Estimate"):
+        if question.strip():
+            with st.spinner("Crunching numbers..."):
+                answer = ask_energy_question(question)
+                st.success("✅ Estimate Ready:")
+                st.write(answer)
+        else:
+            st.warning("Please enter a question.")
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    # Display the existing chat messages via `st.chat_message`.
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
-
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-        # Generate a response using the OpenAI API.
-        stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
-
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+# Footer
+st.markdown(
+    """
+    <hr style="margin-top: 2em;">
+    <div style='text-align: center; font-size: 14px; color: gray;'>
+        ⚡ Built with OpenAI and Streamlit by IntuiNext Inc. | Designed for energy-conscious users
+    </div>
+    """, unsafe_allow_html=True
+)
