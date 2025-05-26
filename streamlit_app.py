@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import os
 
-# Set your OpenAI API key securely
+# OpenAI API key 
 openai.api_key = "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"  # Replace with your actual API key
 
 # Function to ask GPT a question, strictly limited to energy consumption topics
