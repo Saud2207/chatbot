@@ -1,0 +1,8 @@
+git clone https://github.com/namitha01m/conversational_ai.git
+cd conversational_ai
+
+cp /path/to/chatbot/streamlit_app.py ./app.py
+
+git add app.py
+git commit -m "Added energy-focused Streamlit assistant"
+git push origin main
