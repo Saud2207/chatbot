@@ -50,7 +50,7 @@ with st.container():
     st.subheader("💡 Ask Your Energy-Related Question")
     st.markdown("*Examples:*\n- How much energy is needed to cool a 1200 sq ft house?\n- What's the power usage of an AC running for 6 hours a day?\n- How can I improve insulation to reduce heating costs?")
     
-    question = st.text_input("Enter your energy-related question:", placeholder="e.g., energy required to cool a 1200 sq ft house")
+    question = st.text_input("Enter your question below:", placeholder="e.g., energy required to cool a 1200 sq ft house")
 
     if st.button("🔍 Get Estimate"):
         if question.strip():
