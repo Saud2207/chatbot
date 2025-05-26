@@ -40,7 +40,7 @@ st.markdown(
     """
     <div style='text-align: center;'>
         <h1 style='color: #2c3e50;'>🔋 AI Energy Estimation Assistant</h1>
-        <p style='font-size:18px;'>Only answering questions related to energy consumption, usage, and efficiency.</p>
+        <p style='font-size:18px;'>Here to answer questions related to energy consumption, usage, and efficiency.</p>
     </div>
     """, unsafe_allow_html=True
 )
@@ -66,7 +66,7 @@ st.markdown(
     """
     <hr style="margin-top: 2em;">
     <div style='text-align: center; font-size: 14px; color: gray;'>
-        Built using GPT-4o | Restricted to energy usage topics only.
+        Built using GPT-4o by IntuiNext Inc. | Restricted to energy usage topics only.
     </div>
     """, unsafe_allow_html=True
 )
