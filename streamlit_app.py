@@ -16,7 +16,7 @@ def ask_energy_question(question):
                     "content": (
                         "You are an expert energy consultant. Only answer questions strictly related to "
                         "energy consumption, usage, efficiency, HVAC, insulation, power costs, and related engineering. "
-                        "If the user asks anything outside of these domains, politely say you are only trained to respond "
+                        "If the user asks anything outside of these domains, in a funny way say you are only trained to respond "
                         "to energy-related topics."
                     )
                 },
